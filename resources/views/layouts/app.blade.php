@@ -1,4 +1,3 @@
-r
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
@@ -22,101 +21,65 @@ r
 
 <body>
 
-    <div id="app">
-        <span class="absolute text-white text-4xl top-5 left-4 cursor-pointer" onclick="openSidebar()">
-            <i class="bi bi-filter-left px-2 bg-gray-900 rounded-md"></i>
-        </span>
-        <div class="sidebar fixed top-0 bottom-0 lg:left-0 p-2 w-[300px] overflow-y-auto text-center bg-gray-900">
-            <div class="text-gray-100 text-xl">
-                <div class="p-2.5 mt-1 flex items-center">
-                    <i class="bi bi-app-indicator px-2 py-1 rounded-md bg-blue-600"></i>
-                    <h1 class="font-bold text-gray-200 text-[15px] ml-3">TailwindCSS</h1>
-                    <i class="bi bi-x cursor-pointer ml-28 lg:hidden" onclick="openSidebar()"></i>
-                </div>
-                <div class="my-2 bg-gray-600 h-[1px]"></div>
-            </div>
-            <a href="{{ url('/') }}"
-                class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white">
-                <i class="bi bi-house-door-fill"></i>
-                <span class="text-[15px] ml-4 text-gray-200 font-bold">Home</span>
-            </a>
-            <div
-                class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white">
-                <i class="bi bi-bookmark-fill"></i>
-                <span class="text-[15px] ml-4 text-gray-200 font-bold">Bookmark</span>
-            </div>
-            <div class="my-4 bg-gray-600 h-[1px]"></div>
-            <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
-                onclick="dropdown()">
-                <i class="bi bi-chat-left-text-fill"></i>
-                <div class="flex justify-between w-full items-center">
-                    <span class="text-[15px] ml-4 text-gray-200 font-bold">Chatbox</span>
-                    <span class="text-sm rotate-180" id="arrow">
-                        <i class="bi bi-chevron-down"></i>
-                    </span>
-                </div>
-            </div>
-            <div class="text-left text-sm mt-2 w-4/5 mx-auto text-gray-200 font-bold" id="submenu">
-                <h1 class="cursor-pointer p-2 hover:bg-blue-600 rounded-md mt-1">
-                    Social
-                </h1>
-                <h1 class="cursor-pointer p-2 hover:bg-blue-600 rounded-md mt-1">
-                    Personal
-                </h1>
-                <h1 class="cursor-pointer p-2 hover:bg-blue-600 rounded-md mt-1">
-                    Friends
-                </h1>
-            </div>
-            <ul class="navbar-nav ms-auto">
-                <!-- Authentication Links -->
-                @guest
-                @if (Route::has('login'))
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                </li>
-                @endif
+    <ul class="navbar-nav ml-auto">
+        <!-- Authentication Links -->
+        @if(!Auth::check() && (!isset($authgroup) || !Auth::guard($authgroup)->check()))
+        @if (Route::has('login'))
+        <li class="nav-item">
+            @isset($authgroup)
+            <a class="nav-link" href="{{ url("login/$authgroup") }}">{{ __('ログインする') }}</a>
+            @else
+            <a class="nav-link" href="{{ route('login') }}">{{ __('ログインする') }}</a>
+            @endisset
+        </li>
+        @endif
 
-                @if (Route::has('register'))
-                <li>
-                    <a href="{{ route('register') }}"
-                        class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white">
-                        <i class="bi bi-box-arrow-in-right"></i>
-                        <span class="text-[15px] ml-4 text-gray-200 font-bold">register</span>
-                    </a>
-                </li>
-                @endif
+        @if (Route::has('register'))
+        @isset($authgroup)
+        {{-- admin regiseter --}}
+        @if (Route::has("$authgroup-register"))
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route($authgroup . '-register') }}">{{ __('登録する') }}</a>
+        </li>
+        @endif
+        @else
+        {{-- user register --}}
+        @if (Route::has('register'))
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('register') }}">{{ __('登録する') }}</a>
+        </li>
+        @endif
+        @endisset
+        @endif
+        @else
+        {{-- ログインしている時 --}}
+        <li class="nav-item dropdown">
+            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false" v-pre>
+
+                @isset($authgroup)
+                {{ $authgroup }}ユーザー名 : {{ Auth::guard($authgroup)->user()->name }}
                 @else
-                <li
-                    class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white">
-                    <i class="bi bi-box-arrow-in-right"></i>
-                    <span class="text-[15px] ml-4 text-gray-200 font-bold"> {{ Auth::user()->name }}
-                    </span>
-                </li>
+                一般ユーザー名 : {{ Auth::user()->name }}
+                @endisset
+                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
+                                         document.getElementById('logout-form').submit();">
+                        {{ __('ログアウトする') }}
+                    </a>
 
-                <li>
-                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
-                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ route('logout') }}" onclick="event.preventDefault();
-                    document.getElementById('logout-form').submit();"
-                        class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white">
-                        <i class="bi bi-box-arrow-in-right"></i>
-                        <span class="text-[15px] ml-4 text-gray-200 font-bold">logout</span>
-                    </a>
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                         @csrf
                     </form>
-                </li>
+                </div>
+            </a>
+        </li>
+        @endif
+    </ul>
 
-                @endguest
-            </ul>
-        </div>
-
-        <main class="py-4">
-            @yield('content')
-        </main>
+    <main class="py-4">
+        @yield('content')
+    </main>
     </div>
     <script type="text/javascript">
         function dropdown() {

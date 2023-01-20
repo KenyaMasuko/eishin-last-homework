@@ -22,7 +22,6 @@
     <!-- Scripts -->
     @vite(['resources/css/app.css'])
 </head>
-
 <div class="flex justify-center items-center h-screen bg-gray-200 px-6">
     <div class="p-6 max-w-sm w-full bg-white shadow-md rounded-md">
         <div class="flex justify-center items-center">
@@ -36,64 +35,78 @@
             </svg>
             <span class="text-gray-700 font-semibold text-2xl">Dashboard</span>
         </div>
+        @section('content')
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-header">{{ isset($authgroup) ? $authgroup : ""}} {{ __('Login') }}
+                        </div>
 
-        <form class="mt-4" action="{{ route('login') }}" method="POST">
-            @csrf
-            <label class="block">
-                <span class="text-gray-700 text-sm">Email</span>
-                <input id="email" type="email" class="form-input mt-1 block w-full rounded-md focus:border-indigo-600
-                @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required
-                    autocomplete="email" autofocus>
-                @error('email')
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-                @enderror
-            </label>
+                        <div class="card-body">
+                            @isset($authgroup)
+                            <form method="POST" action="{{ url("login/$authgroup") }}">
+                                @else
+                                <form method="POST" action="{{ route('login') }}">
+                                    @endisset
+                                    @csrf
+                                    <label class="block">
+                                        <span class="text-gray-700 text-sm">Email</span>
+                                        <input id="email" type="email"
+                                            class="form-input mt-1 block w-full rounded-md focus:border-indigo-600 @error('email') is-invalid @enderror"
+                                            name="email" value="{{ old('email') }}" required autocomplete="email"
+                                            autofocus>
+                                        @error('email')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </label>
 
-            <label class=" block mt-3">
-                <span class="text-gray-700 text-sm">Password</span>
-                <input id="password" type="password"
-                    class="form-input mt-1 block w-full rounded-md focus:border-indigo-600k @error('password') is-invalid @enderror"
-                    name="password" required autocomplete="current-password">
+                                    <label class=" block mt-3">
+                                        <span class="text-gray-700 text-sm">Password</span>
+                                        <input id="password" type="password"
+                                            class="form-input mt-1 block w-full rounded-md focus:border-indigo-600k @error('password') is-invalid @enderror"
+                                            name="password" required autocomplete="current-password">
 
-                @error('password')
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-                @enderror
-            </label>
+                                        @error('password')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </label>
 
-            <div class="flex justify-between items-center mt-4">
-                <div>
-                    <label class="inline-flex items-center">
-                        <input class="form-checkbox text-indigo-600" type="checkbox" name="remember" id="remember" {{
-                            old('remember') ? 'checked' : '' }}>
-                        <span class="mx-2 text-gray-600 text-sm">Remember me</span>
-                    </label>
-                </div>
+                                    <div class="flex justify-between items-center mt-4">
+                                        <div>
+                                            <label class="inline-flex items-center">
+                                                <input class="form-checkbox text-indigo-600" type="checkbox"
+                                                    name="remember" id="remember" {{ old('remember') ? 'checked' : ''
+                                                    }}>
+                                                <span class="mx-2 text-gray-600 text-sm">Remember me</span>
+                                            </label>
+                                        </div>
 
-                <div>
-                    @if (Route::has('password.request'))
-                    <a class="block text-sm fontme text-indigo-700 hover:underline"
-                        href="{{ route('password.request') }}">
-                        {{ __('Forgot Your Password?') }}
-                    </a>
-                    @endif
-                </div>
-            </div>
+                                        <div>
+                                            @if (Route::has('password.request'))
+                                            <a class="block text-sm fontme text-indigo-700 hover:underline"
+                                                href="{{ route('password.request') }}">
+                                                {{ __('Forgot Your Password?') }}
+                                            </a>
+                                            @endif
+                                        </div>
+                                    </div>
 
-            <div class="mt-6">
-                <button
-                    class="py-2 px-4 text-center bg-indigo-600 rounded-md w-full text-white text-sm hover:bg-indigo-500">
-                    Sign in
-                </button>
-            </div>
-        </form>
-    </div>
-</div>
-{{-- @endsection --}}
+                                    <div class="mt-6">
+                                        <button
+                                            class="py-2 px-4 text-center bg-indigo-600 rounded-md w-full text-white text-sm hover:bg-indigo-500">
+                                            Sign in
+                                        </button>
+                                    </div>
+                                </form>
+                        </div>
+                    </div>
+                    {{-- @endsection --}}
 
-</body>
+                    </body>
 
 </html>
