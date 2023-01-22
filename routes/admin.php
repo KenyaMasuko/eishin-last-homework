@@ -29,35 +29,39 @@ Route::get('/', function () {
 
 Route::get('/dashboard', function () {
     return view('admin.dashboard');
-})->middleware(['auth:admin', 'verified'])->name('dashboard');
+})->middleware(['auth:admin'])->name('dashboard');
 
 Route::middleware('auth:admin')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/2023-01-22 11:36:50 /favicon.ico ...................................... ~ 0sprofile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('register', [RegisteredUserController::class, 'create'])
-    ->name('register');
+Route::middleware('guest')->group(function () {
+    Route::get('register', [RegisteredUserController::class, 'create'])
+        ->name('register');
 
-Route::post('register', [RegisteredUserController::class, 'store']);
+    Route::post('register', [RegisteredUserController::class, 'store']);
 
-Route::get('login', [AuthenticatedSessionController::class, 'create'])
-    ->name('login');
+    Route::get('/login', [AuthenticatedSessionController::class, 'create'])
+        ->name('login');
 
-Route::post('login', [AuthenticatedSessionController::class, 'store']);
+    Route::post('/login', [AuthenticatedSessionController::class, 'store'])
+        ->middleware('guest');
 
-Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])
-    ->name('password.request');
+    Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])
+        ->name('password.request');
 
-Route::post('forgot-password', [PasswordResetLinkController::class, 'store'])
-    ->name('password.email');
+    Route::post('forgot-password', [PasswordResetLinkController::class, 'store'])
+        ->name('password.email');
 
-Route::get('reset-password/{token}', [NewPasswordController::class, 'create'])
-    ->name('password.reset');
+    Route::get('reset-password/{token}', [NewPasswordController::class, 'create'])
+        ->name('password.reset');
 
-Route::post('reset-password', [NewPasswordController::class, 'store'])
-    ->name('password.store');
+    Route::post('reset-password', [NewPasswordController::class, 'store'])
+        ->name('password.store');
+});
+
 
 Route::get('verify-email', [EmailVerificationPromptController::class, '__invoke'])
     ->name('verification.notice');
