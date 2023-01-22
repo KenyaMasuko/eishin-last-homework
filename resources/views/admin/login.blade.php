@@ -37,8 +37,8 @@
             <span class="text-gray-700 font-semibold text-2xl">Dashboard</span>
         </div>
 
-        <form class="mt-4" action="{{ route('user.login') }}" method="POST">
-            user
+        <form class="mt-4" action="{{ route('admin.login') }}" method="POST">
+            admin
             @csrf
             <label class="block">
                 <span class="text-gray-700 text-sm">Email</span>

@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers\Admin\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Request;
 
 class LoginController extends Controller
 {
@@ -21,6 +23,11 @@ class LoginController extends Controller
 
     use AuthenticatesUsers;
 
+    public function showLoginForm()
+    {
+        return view('admin.login');
+    }
+
     /**
      * Where to redirect users after login.
      *
@@ -35,6 +42,17 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest')->except('logout');
+        $this->middleware('guest:admin')->except('logout');
+    }
+
+    public function guard()
+    {
+        return Auth::guard('admin');
+    }
+
+    public function logout(Request $request)                //追記
+    {                                                       //追記
+        $this->performLogout($request);                     //追記
+        return redirect('admin.login');                     //追記
     }
 }
