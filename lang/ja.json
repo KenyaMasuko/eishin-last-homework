@@ -1,0 +1,12 @@
+{
+    "Whoops! Something went wrong.": "サーバーで何か問題が発生しました。",
+    "Email": "メールアドレス",
+    "Name": "名前",
+    "Password": "パスワード",
+    "Confirm Password": "パスワード（確認用）",
+    "Already registered?": "既に登録済みですか？",
+    "Remember me": "パスワードを記憶する",
+    "Forgot your password?": "パスワードを忘れましたか？",
+    "Log in": "ログイン",
+    "Register": "登録する"
+}
