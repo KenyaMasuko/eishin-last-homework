@@ -131,13 +131,13 @@ return [
         Str::slug(env('APP_NAME', 'laravel'), '_') . '_session'
     ),
 
-    'cookie_owner' => env(
-        'SESSION_COOKIE_OWNER',
+    'cookie_company' => env(
+        'SESSION_COOKIE_COMPANY',
         Str::slug(env('APP_NAME', 'laravel'), '_') . '_session_owner'
     ),
 
     'cookie_admin' => env(
-        'SESSION_COOKIE_Admin',
+        'SESSION_COOKIE_COMPANY',
         Str::slug(env('APP_NAME', 'laravel'), '_') . '_session_admin'
     ),
     /*

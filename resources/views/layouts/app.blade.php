@@ -21,6 +21,8 @@
         @include('layouts.admin-navigation')
         @elseif (auth('users')->user())
         @include('layouts.user-navigation')
+        @elseif (auth('companies')->user())
+        @include('layouts.company-navigation')
         @endif
 
         <!-- Page Heading -->

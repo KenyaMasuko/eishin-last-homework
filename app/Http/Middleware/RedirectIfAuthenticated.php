@@ -11,6 +11,8 @@ class RedirectIfAuthenticated
 {
     private const GUARD_USER = 'users';
     private const GUARD_ADMIN = 'admin';
+    private const GUARD_COMPANY = 'companies';
+
     /**
      * Handle an incoming request.
      *
@@ -21,18 +23,13 @@ class RedirectIfAuthenticated
      */
     public function handle(Request $request, Closure $next, ...$guards)
     {
-        // $guards = empty($guards) ? [null] : $guards;
-
-        // foreach ($guards as $guard) {
-        //     if (Auth::guard($guard)->check()) {
-        //         return redirect(RouteServiceProvider::HOME);
-        //     }
-        // }
-
         if (Auth::guard(self::GUARD_USER)->check() && $request->routeIs('user.*')) {
             return redirect(RouteServiceProvider::HOME);
         }
-        // ddd($request);
+
+        if (Auth::guard(self::GUARD_COMPANY)->check() && $request->routeIs('company.*')) {
+            return redirect(RouteServiceProvider::COMPANY_HOME);
+        }
 
         if (Auth::guard(self::GUARD_ADMIN)->check() && $request->routeIs('admin.*')) {
             return redirect(RouteServiceProvider::ADMIN_HOME);
