@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Admin\Auth\RegisteredUserController;
 use App\Http\Controllers\Admin\Auth\VerifyEmailController;
 use App\Http\Controllers\Admin\IndustryController;
+use App\Http\Controllers\Admin\FeatureController;
 
 /*
 |--------------------------------------------------------------------------
@@ -86,4 +87,6 @@ Route::middleware('auth:admin')->group(function () {
         ->name('logout');
 
     Route::resource('industry', IndustryController::class);
+
+    Route::resource('feature', FeatureController::class);
 });

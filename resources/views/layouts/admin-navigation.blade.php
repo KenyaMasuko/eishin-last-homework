@@ -33,7 +33,8 @@
                         </a>
                     </li>
                     <li class="min-w-max">
-                        <a href="#" class="group flex items-center space-x-4 rounded-md px-4 py-3 text-gray-600">
+                        <a href="{{ route('admin.feature.index') }}"
+                            class="group flex items-center space-x-4 rounded-md px-4 py-3 text-gray-600">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
                                 fill="currentColor">
                                 <path class="fill-current text-gray-600 group-hover:text-cyan-600" fill-rule="evenodd"
