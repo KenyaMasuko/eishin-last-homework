@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\Auth\RegisteredUserController;
 use App\Http\Controllers\Admin\Auth\VerifyEmailController;
 use App\Http\Controllers\Admin\IndustryController;
 use App\Http\Controllers\Admin\FeatureController;
+use App\Http\Controllers\Admin\CompanyController;
 
 /*
 |--------------------------------------------------------------------------
@@ -89,4 +90,6 @@ Route::middleware('auth:admin')->group(function () {
     Route::resource('industry', IndustryController::class);
 
     Route::resource('feature', FeatureController::class);
+
+    Route::resource('company', CompanyController::class);
 });
