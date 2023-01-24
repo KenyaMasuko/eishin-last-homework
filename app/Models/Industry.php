@@ -14,4 +14,9 @@ class Industry extends Model
      * @var array
      */
     protected $guarded = ['id']; //複数代入しない属性を指定
+
+    public function company()
+    {
+        return $this->hasMany(Company::class);
+    }
 }

@@ -19,7 +19,8 @@
                         </a>
                     </li>
                     <li class="min-w-max">
-                        <a href="#" class="bg group flex items-center space-x-4 rounded-full px-4 py-3 text-gray-600">
+                        <a href="{{ route('company.info.index', Auth::id()) }}"
+                            class="bg group flex items-center space-x-4 rounded-full px-4 py-3 text-gray-600">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
                                 fill="currentColor">
                                 <path class="fill-current text-gray-300 group-hover:text-cyan-300" fill-rule="evenodd"
@@ -28,7 +29,7 @@
                                 <path class="fill-current text-gray-600 group-hover:text-cyan-600"
                                     d="M6 12a2 2 0 012-2h8a2 2 0 012 2v2a2 2 0 01-2 2H2h2a2 2 0 002-2v-2z" />
                             </svg>
-                            <span class="group-hover:text-gray-700">業界一覧</span>
+                            <span class="group-hover:text-gray-700">会社情報</span>
                         </a>
                     </li>
                     <li class="min-w-max">
