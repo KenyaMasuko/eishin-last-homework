@@ -86,4 +86,6 @@ Route::middleware('auth:companies')->group(function () {
         ->name('logout');
 
     Route::resource('info', CompanyController::class);
+
+    Route::resource('offer', OfferController::class);
 });

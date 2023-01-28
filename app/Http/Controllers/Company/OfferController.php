@@ -1,9 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Company;
 
-use App\Models\Offer;
+use App\Http\Controllers\Controller;
+use App\Models\Company;
 use Illuminate\Http\Request;
+use App\Models\Feature;
+use App\Models\Offer;
+use Illuminate\Support\Facades\Auth;
 
 class OfferController extends Controller
 {
@@ -14,9 +18,10 @@ class OfferController extends Controller
      */
     public function index()
     {
-        $offers = Offer::all();
+        $user_id = Auth::user()->id;
+        $offers = Company::find($user_id)->offers()->get();
 
-        return view('company.offer.index');
+        return view('company.offer.index', compact('offers'));
     }
 
     /**
@@ -26,7 +31,9 @@ class OfferController extends Controller
      */
     public function create()
     {
-        return view('company.offer.create');
+        $features = Feature::all();
+
+        return view('company.offer.create', compact('features'));
     }
 
     /**
@@ -38,19 +45,20 @@ class OfferController extends Controller
     public function store(Request $request)
     {
         $validatedOffer = $request->validate([
-            'title' => 'required:20',
-            'description' => 'required:max255',
-            'is_public' => 'require'
+            'title' => 'required|max:20',
+            'description' => 'required|max:255',
+            'is_public' => 'required',
+            'feature_ids' => 'required'
         ]);
 
         $Offer = new Offer();
         $Offer->title = $validatedOffer['title'];
         $Offer->description = $validatedOffer['description'];
         $Offer->is_public = $validatedOffer['is_public'];
-
+        $Offer->company_id = Auth::id();
         $Offer->save();
 
-        $Offer->features()->sync($validatedOffer['feature_ids']);
+        $Offer->features()->sync($request['feature_ids']);
 
         return redirect(route('company.offer.index'));
     }
@@ -74,7 +82,10 @@ class OfferController extends Controller
      */
     public function edit(Offer $offer)
     {
-        //
+        $offers = Offer::find($offer->id);
+        $features = Feature::all();
+
+        return view('company.offer.edit', compact('offers', 'features'));
     }
 
     /**
@@ -86,7 +97,23 @@ class OfferController extends Controller
      */
     public function update(Request $request, Offer $offer)
     {
-        //
+        $validatedOffer = $request->validate([
+            'title' => 'required|max:20',
+            'description' => 'required|max:255',
+            'is_public' => 'required',
+            'feature_ids' => 'required'
+        ]);
+
+        $Offer = new Offer();
+        $Offer::find($offer['id'])->features()->sync($validatedOffer['feature_ids']);
+
+        Offer::where(['id' => $offer['id']])->update([
+            'title' => $validatedOffer['title'],
+            'description' => $validatedOffer['description'],
+            'is_public' => $validatedOffer['is_public']
+        ]);
+
+        return redirect(route('company.offer.index'));
     }
 
     /**
@@ -97,6 +124,8 @@ class OfferController extends Controller
      */
     public function destroy(Offer $offer)
     {
-        //
+        Offer::find($offer->id)->delete();
+
+        return redirect(route('company.offer.index'));
     }
 }

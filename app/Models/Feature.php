@@ -17,6 +17,6 @@ class Feature extends Model
 
     public function offers()
     {
-        $this->belongsToMany(Offer::class);
+        return $this->belongsToMany(Offer::class);
     }
 }

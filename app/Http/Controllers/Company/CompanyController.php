@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Company;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Company;
+use App\Models\Feature;
 use App\Models\Industry;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;

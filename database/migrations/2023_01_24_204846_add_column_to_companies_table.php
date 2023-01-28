@@ -14,9 +14,15 @@ return new class extends Migration
     public function up()
     {
         Schema::table('companies', function (Blueprint $table) {
-            $table->string('ceo_name')->nullable()->after('name');
-            $table->string('logo')->nullable()->after('ceo_name');
-            $table->foreignId('industry_id')->nullable()->after('logo')->constrained('industries');
+            if (!Schema::hasColumn('companies', 'ceo_name')) {
+                $table->string('ceo_name')->nullable()->after('name');
+            }
+            if (!Schema::hasColumn('companies', 'ceo_name')) {
+                $table->string('logo')->nullable()->after('ceo_name');
+            }
+            if (!Schema::hasColumn('companies', 'industry_id')) {
+                $table->foreignId('industry_id')->nullable()->after('logo')->constrained('industries')->cascadeOnDelete();
+            }
         });
     }
 

@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\Auth\VerifyEmailController;
 use App\Http\Controllers\Admin\IndustryController;
 use App\Http\Controllers\Admin\FeatureController;
 use App\Http\Controllers\Admin\CompanyController;
+use App\Http\Controllers\Admin\OfferController;
 
 /*
 |--------------------------------------------------------------------------
@@ -92,4 +93,6 @@ Route::middleware('auth:admin')->group(function () {
     Route::resource('feature', FeatureController::class);
 
     Route::resource('company', CompanyController::class);
+
+    Route::resource('offer', OfferController::class);
 });

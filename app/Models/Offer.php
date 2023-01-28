@@ -13,6 +13,11 @@ class Offer extends Model
 
     public function features()
     {
-        $this->belongsToMany(Feature::class);
+        return $this->belongsToMany(Feature::class)->withPivot(['feature_id']);
+    }
+
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
     }
 }
