@@ -14,9 +14,9 @@ return new class extends Migration
     public function up()
     {
         Schema::table('companies', function (Blueprint $table) {
-            $table->string('ceo_name')->after('name');
-            $table->string('logo')->after('ceo_name');
-            $table->foreignId('industry_id')->constrained('industries');
+            $table->string('ceo_name')->nullable()->after('name');
+            $table->string('logo')->nullable()->after('ceo_name');
+            $table->foreignId('industry_id')->nullable()->after('logo')->constrained('industries');
         });
     }
 
@@ -30,7 +30,7 @@ return new class extends Migration
         Schema::table('companies', function (Blueprint $table) {
             $table->dropColumn('ceo_name');
             $table->dropColumn('logo');
-            $table->dropColumn('industry_id');
+            $table->dropForeign('companies_industry_id_foreign');
         });
     }
 };

@@ -9,9 +9,9 @@ use App\Http\Controllers\Company\Auth\EmailVerificationPromptController;
 use App\Http\Controllers\Company\Auth\NewPasswordController;
 use App\Http\Controllers\Company\Auth\PasswordController;
 use App\Http\Controllers\Company\Auth\PasswordResetLinkController;
-use App\Http\Controllers\Company\Auth\RegisteredUserController;
 use App\Http\Controllers\Company\Auth\VerifyEmailController;
 use App\Http\Controllers\Company\CompanyController;
+use App\Http\Controllers\Company\OfferController;
 
 /*
 |--------------------------------------------------------------------------

@@ -8,8 +8,6 @@ use App\Models\Company;
 use App\Models\Industry;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules;
 
 class CompanyController extends Controller
 {
@@ -21,9 +19,9 @@ class CompanyController extends Controller
     public function index()
     {
         $company = Company::find(Auth::id());
-        $industry = Industry::find($company['industry_id']);
+        $industries = Industry::find($company['industry_id']);
 
-        return view('company.info.index', compact('company', 'industry'));
+        return view('company.info.index', compact('company', 'industries'));
     }
 
     /**
@@ -86,7 +84,10 @@ class CompanyController extends Controller
         $company = $request->all();
         unset($company['_token']);
         unset($company['_method']);
-        Company::where(['id' => $id])->update($company);
+        Company::where(['id' => $id])->update([
+            ...$company,
+            'logo' => $request->file('logo')->store('public/images')
+        ]);
 
         return redirect(route('company.info.index'));
     }

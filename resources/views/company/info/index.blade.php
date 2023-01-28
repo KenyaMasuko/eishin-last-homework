@@ -25,14 +25,27 @@
                         class="px-6 py-3 text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         代表者名
                     </th>
-                    <td class="px-6 py-3">{{ $company->name }}</td>
+                    <td class="px-6 py-3">{{ $company['ceo_name'] ?? '未登録' }}</td>
                 </tr>
                 <tr class="px-6 py-3">
                     <th
                         class="px-6 py-3 text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         業界
                     </th>
-                    <td class="px-6 py-3">{{ $industry->name }}</td>
+                    <td class="px-6 py-3"> {{ $industries->name ?? '未登録' }} </td>
+                </tr>
+                <tr class="px-6 py-3">
+                    <th
+                        class="px-6 py-3 text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        ロゴ
+                    </th>
+                    <td class="px-6 py-3">
+                        @if ($company->logo)
+                        <img src="{{ \Storage::url($company->logo) }}" style="width: 100px" />
+                        @else
+                        未登録
+                        @endif
+                    </td>
                 </tr>
             </table>
         </div>

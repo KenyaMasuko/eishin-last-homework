@@ -5,7 +5,7 @@
         {{ $error }}
         @endforeach
         @endif
-        <form method="POST" action="{{ route('company.info.update', $company->id) }}">
+        <form method="POST" action="{{ route('company.info.update', $company->id) }}" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             <div class="mb-6">
