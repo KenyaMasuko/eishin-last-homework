@@ -15,7 +15,7 @@ class OfferController extends Controller
      */
     public function index()
     {
-        $offers = Offer::all();
+        $offers = Offer::where(['is_public' => 1])->get();
 
         return view('user.offer.index', compact('offers'));
     }

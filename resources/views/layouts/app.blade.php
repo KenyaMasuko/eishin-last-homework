@@ -23,6 +23,8 @@
         @include('layouts.user-navigation')
         @elseif (auth('companies')->user())
         @include('layouts.company-navigation')
+        @else
+        @include('layouts.guest-navigation')
         @endif
 
         <!-- Page Heading -->
