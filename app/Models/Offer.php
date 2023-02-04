@@ -9,7 +9,7 @@ class Offer extends Model
 {
     use HasFactory;
 
-    protected $guarded = ['id']; //複数代入しない属性を指定
+    protected $guarded = ['id'];
 
     public function features()
     {
@@ -19,5 +19,10 @@ class Offer extends Model
     public function company()
     {
         return $this->belongsTo(Company::class);
+    }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
     }
 }

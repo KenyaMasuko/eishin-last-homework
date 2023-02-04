@@ -8,12 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Industry extends Model
 {
     use HasFactory;
-    /**
-     * 複数代入しない属性
-     *
-     * @var array
-     */
-    protected $guarded = ['id']; //複数代入しない属性を指定
+
+    protected $guarded = ['id'];
 
     public function company()
     {

@@ -26,7 +26,7 @@
                         業界
                     </th>
                     <td class="px-6 py-3">
-                        {{ $company->industry ?? '未登録です' }}
+                        {{ $company->industry->name ?? '未登録です' }}
                     </td>
                 </tr>
             </table>

@@ -16,6 +16,18 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
                 </div>
+
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-nav-link :href="route('user.apply.index')" :active="request()->routeIs('user.apply.index')">
+                        {{ __('応募求人') }}
+                    </x-nav-link>
+                </div>
+
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-nav-link :href="route('user.offers.index')" :active="request()->routeIs('user.offers.index')">
+                        {{ __('求人一覧') }}
+                    </x-nav-link>
+                </div>
             </div>
 
             <!-- Settings Dropdown -->
