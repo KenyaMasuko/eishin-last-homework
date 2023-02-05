@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Http\Controllers\Controller;;
+use App\Http\Controllers\Controller;
+use App\Mail\AppliedMail;
+use App\Mail\ThanksMail;
 
 use App\Models\Offer;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class CandidateController extends Controller
 {
@@ -51,6 +54,13 @@ class CandidateController extends Controller
 
         $Offer = new Offer();
         $Offer::find($request['offer_id'])->users()->sync(Auth::id());
+
+        $offer = $Offer::find($request['offer_id']);
+        $user = Auth::user();
+        $company = $offer->company()->first();
+
+        Mail::to($user->email)->send(new ThanksMail($offer, $company, $user));
+        Mail::to($company->email)->send(new AppliedMail($offer, $company, $user));
 
         return redirect(route('user.apply.index'));
     }
