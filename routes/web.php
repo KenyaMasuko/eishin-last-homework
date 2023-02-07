@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\User\OfferController;
 use App\Http\Controllers\User\CandidateController;
+use App\Http\Controllers\ChatController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -31,6 +32,8 @@ Route::middleware('auth:users')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::resource('apply', CandidateController::class);
+
+    Route::post('apply/{apply}', [ChatController::class, 'update'])->name('chat.store');
 });
 
 Route::resource('offers', OfferController::class);

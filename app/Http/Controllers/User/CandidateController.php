@@ -5,7 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Mail\AppliedMail;
 use App\Mail\ThanksMail;
-
+use App\Models\Chat;
 use App\Models\Offer;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -70,9 +70,22 @@ class CandidateController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function show()
+    public function show($id)
     {
-        //
+        $application = Offer::find($id);
+
+        $length = Chat::all()->count();
+
+        // 表示する件数を代入
+        $display = 5;
+        $chats = Chat::where(['offer_id' => $id])
+            ->where(['user_id' => Auth::id()])
+            ->offset($length - ($display + 1))
+            ->limit($display)
+            ->get();
+        // $chats = Chat::all();
+
+        return view('user.apply.show', compact('application', 'chats'));
     }
 
     /**
@@ -93,7 +106,6 @@ class CandidateController extends Controller
      */
     public function update(Request $request)
     {
-        //
     }
 
     /**
