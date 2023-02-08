@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\User;
+namespace App\Http\Controllers\Company;
 
 use App\Http\Controllers\Controller;
 use App\Mail\AppliedMail;
@@ -21,9 +21,13 @@ class CandidateController extends Controller
      */
     public function index()
     {
-        $applications = User::find(Auth::id())->offers()->get();
+        $users = Offer::with('users')
+            ->where(['company_info_id' => Auth::user()->company_id])
+            ->first()
+            ->users()
+            ->get();
 
-        return view('user.apply.index', compact('applications'));
+        return view('company.candidate.index', compact('users'));
     }
 
     /**
@@ -36,7 +40,7 @@ class CandidateController extends Controller
     {
         $offer = Offer::find($request->query('offer_id'));
 
-        return view('user.apply.create', compact('offer'));
+        return view('company.candidate.create', compact('offer'));
     }
 
     /**
@@ -62,7 +66,7 @@ class CandidateController extends Controller
         Mail::to($user->email)->send(new ThanksMail($offer, $company, $user));
         Mail::to($company->email)->send(new AppliedMail($offer, $company, $user));
 
-        return redirect(route('user.apply.index'));
+        return redirect(route('company.candidate.index'));
     }
 
     /**
@@ -72,20 +76,19 @@ class CandidateController extends Controller
      */
     public function show($id)
     {
-        $offer = Offer::find($id);
+        $offer = User::find(1)->offers()->where(['company_info_id' => Auth::user()->company_id])->first();
 
         $length = Chat::all()->count();
 
         // 表示する件数を代入
         $display = 5;
-        $chats = Chat::where(['offer_id' => $id])
-            ->where(['user_id' => Auth::id()])
+        $chats = Chat::where(['offer_id' => $offer->id])
+            ->where(['user_id' => $id])
             ->offset($length - $display)
             ->limit($display)
             ->get();
-        // $chats = Chat::all();
 
-        return view('user.apply.show', compact('offer', 'chats'));
+        return view('company.candidate.show', compact('chats', 'offer'));
     }
 
     /**

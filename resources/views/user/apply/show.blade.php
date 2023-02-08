@@ -7,7 +7,7 @@
         left: -15px;
         margin-top: -30px;
         border: 5px solid transparent;
-        border-right: 15px solid black;
+        border-right: 15px solid rgb(187 247 208 / var(--tw-bg-opacity));
     }
 
     /* 自身のコメントの吹き出し */
@@ -27,21 +27,26 @@
         <ul>
             {{-- チャットデータを繰り返し表示 --}}
             @foreach ($chats as $chat)
-            <p class="text-xs @if($chat->send_by === 1 ) text-right @endif">
-                {{$chat->created_at}} ＠{{$chat->user->name}}
+            <p class="text-xs @if($chat->send_by === 0 ) text-right @endif">
+                {{$chat->created_at}} ＠
+                @if ($chat->send_by === 1 )
+                {{$offer->companyInfo->name}}
+                @else
+                {{$chat->user->name}}
+                @endif
             </p>
             <li
-                class="w-max mb-3 p-2 rounded-lg bg-green-200 relative @if($chat->send_by === 1) self ml-auto @else other @endif">
+                class="w-max mb-3 p-2 rounded-lg bg-green-200 relative @if($chat->send_by === 0) self ml-auto @else other @endif">
                 {{$chat->message}}
             </li>
             @endforeach
         </ul>
     </div>
     <form class="my-4 py-2 px-4 rounded-lg bg-gray-300 text-sm flex flex-col md:flex-row flex-grow"
-        action="{{ route('user.chat.store', $application->id) }}" method="POST">
+        action="{{ route('user.chat.store', $offer->id) }}" method="POST">
         @csrf
-        <input type="hidden" name="send_by" value="1">
-        <input type="hidden" name="company_id" value="{{ $application->company_id }}">
+        <input type="hidden" name="send_by" value="0">
+        <input type="hidden" name="company_info_id" value="{{ $offer->company_info_id }}">
         <input class="mt-2 md:mt-0 md:ml-2 py-1 px-2 rounded flex-auto" type="text" name="message"
             placeholder="Input message." maxlength="200">
         <button class="mt-2 md:mt-0 md:ml-2 py-1 px-2 rounded text-center bg-gray-500 text-white"

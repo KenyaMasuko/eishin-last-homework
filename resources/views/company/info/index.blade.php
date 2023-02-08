@@ -30,6 +30,13 @@
                 <tr class="px-6 py-3">
                     <th
                         class="px-6 py-3 text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        メールアドレス
+                    </th>
+                    <td class="px-6 py-3">{{ $company->email ?? '未登録' }}</td>
+                </tr>
+                <tr class="px-6 py-3">
+                    <th
+                        class="px-6 py-3 text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         業界
                     </th>
                     <td class="px-6 py-3"> {{ $industries->name ?? '未登録' }} </td>

@@ -13,13 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('chats', function (Blueprint $table) {
+        Schema::create('company_infos', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('message');
-            $table->integer('send_by');
-            $table->foreignId('offer_id')->constrained('offers')->cascadeOnDelete();
-            $table->foreignId('company_id')->constrained('companies')->cascadeOnDelete();
-            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+            $table->string('name');
+            $table->string('ceo_name')->nullable();
+            $table->string('logo')->nullable();
+            $table->foreignId('industry_id')->nullable()->constrained('industries')->cascadeOnDelete();
             $table->timestamps();
         });
     }
@@ -31,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('chats');
+        Schema::dropIfExists('company_infos');
     }
 };

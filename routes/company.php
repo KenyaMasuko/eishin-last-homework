@@ -12,6 +12,9 @@ use App\Http\Controllers\Company\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Company\Auth\VerifyEmailController;
 use App\Http\Controllers\Company\CompanyController;
 use App\Http\Controllers\Company\OfferController;
+use App\Http\Controllers\Company\RegisteredAccountController;
+use App\Http\Controllers\Company\CandidateController;
+use App\Http\Controllers\ChatController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,10 +42,6 @@ Route::middleware('auth:companies')->group(function () {
 });
 
 Route::middleware('guest')->group(function () {
-    // Route::get('register', [RegisteredUserController::class, 'create'])
-    //     ->name('register');
-
-    // Route::post('register', [RegisteredUserController::class, 'store']);
 
     Route::get('/login', [AuthenticatedSessionController::class, 'showLoginForm'])
         ->name('login');
@@ -88,4 +87,10 @@ Route::middleware('auth:companies')->group(function () {
     Route::resource('info', CompanyController::class);
 
     Route::resource('offer', OfferController::class);
+
+    Route::resource('account', RegisteredAccountController::class);
+
+    Route::resource('candidate', CandidateController::class);
+
+    Route::post('candidate/{candidate}', [ChatController::class, 'update'])->name('chat.store');
 });

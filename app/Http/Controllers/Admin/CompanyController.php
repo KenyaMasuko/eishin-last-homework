@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Company;
+use App\Models\CompanyInfo;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -19,7 +20,7 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        $companies = Company::all();
+        $companies = CompanyInfo::all();
 
         return view('admin.company.index', compact('companies'));
     }
@@ -46,13 +47,20 @@ class CompanyController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:' . Company::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'company_name' => ['required', 'string']
+        ]);
+
+        $company_info = CompanyInfo::create([
+            'name' => $request->company_name,
         ]);
 
         $registered_user = Company::create([
+            'company_id' => $company_info->id,
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
+
 
         event(new Registered($registered_user));
 
@@ -70,7 +78,7 @@ class CompanyController extends Controller
      */
     public function show($id)
     {
-        $company = Company::find($id);
+        $company = CompanyInfo::find($id);
         return view('admin.company.show', compact('company'));
     }
 
@@ -105,7 +113,7 @@ class CompanyController extends Controller
      */
     public function destroy($id)
     {
-        Company::find($id)->delete();
+        CompanyInfo::find($id)->delete();
 
         return redirect(route('admin.company.index'));
     }

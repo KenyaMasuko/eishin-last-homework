@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Company;
 
 use App\Http\Controllers\Controller;
 use App\Models\Company;
+use App\Models\CompanyInfo;
 use Illuminate\Http\Request;
 use App\Models\Feature;
 use App\Models\Offer;
@@ -18,8 +19,8 @@ class OfferController extends Controller
      */
     public function index()
     {
-        $user_id = Auth::user()->id;
-        $offers = Company::find($user_id)->offers()->get();
+        $company_id = Auth::user()->company_id;
+        $offers = CompanyInfo::find($company_id)->offers()->get();
 
         return view('company.offer.index', compact('offers'));
     }
@@ -55,7 +56,7 @@ class OfferController extends Controller
         $Offer->title = $validatedOffer['title'];
         $Offer->description = $validatedOffer['description'];
         $Offer->is_public = $validatedOffer['is_public'];
-        $Offer->company_id = Auth::id();
+        $Offer->company_info_id = Auth::user()->company_id;
         $Offer->save();
 
         $Offer->features()->sync($request['feature_ids']);

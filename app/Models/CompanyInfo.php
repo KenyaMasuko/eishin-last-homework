@@ -5,25 +5,25 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Offer extends Model
+class CompanyInfo extends Model
 {
     use HasFactory;
 
     protected $guarded = ['id'];
 
-    public function features()
+    public function industry()
     {
-        return $this->belongsToMany(Feature::class)->withPivot(['feature_id']);
+        return $this->belongsTo(Industry::class);
     }
 
-    public function users()
+    public function offers()
     {
-        return $this->belongsToMany(User::class);
+        return $this->hasMany(Offer::class);
     }
 
-    public function companyInfo()
+    public function accounts()
     {
-        return $this->belongsTo(CompanyInfo::class);
+        return $this->hasMany(Company::class);
     }
 
     public function chats()

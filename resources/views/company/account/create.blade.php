@@ -1,16 +1,16 @@
 <x-guest-layout>
-    <form method="POST" action="{{ route('admin.company.store') }}">
+    @if ($errors->any())
+    @foreach ($errors->all() as $error)
+    {{ $error }}
+    @endforeach
+    @endif
+
+    <form method="POST" action="{{ route('company.account.store') }}">
         @csrf
 
         <!-- Name -->
         <div>
-            <x-input-label for="company_name" :value="__('企業名')" />
-            <x-text-input id="company_name" class="block mt-1 w-full" type="text" name="company_name"
-                :value="old('company_name')" required autofocus />
-            <x-input-error :messages="$errors->get('company_name')" class="mt-2" />
-        </div>
-        <div>
-            <x-input-label for="name" :value="__('担当者名')" />
+            <x-input-label for="name" :value="__('Name')" />
             <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required
                 autofocus />
             <x-input-error :messages="$errors->get('name')" class="mt-2" />
@@ -18,7 +18,7 @@
 
         <!-- Email Address -->
         <div class="mt-4">
-            <x-input-label for="email" :value="__('担当者メールアドレス')" />
+            <x-input-label for="email" :value="__('Email')" />
             <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')"
                 required />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
@@ -46,8 +46,8 @@
 
         <div class="flex items-center justify-end mt-4">
             <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
-                href="{{ route('admin.company.index') }}">
-                {{ __('Already registered?') }}
+                href="{{ route('company.account.index') }}">
+                戻る
             </a>
 
             <x-primary-button class="ml-4">

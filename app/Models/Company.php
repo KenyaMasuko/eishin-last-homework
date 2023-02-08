@@ -18,6 +18,7 @@ class Company extends Authenticatable
         'name',
         'email',
         'password',
+        'company_id'
     ];
 
     /**
@@ -39,23 +40,8 @@ class Company extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function industry()
+    public function company()
     {
-        return $this->belongsTo(Industry::class);
-    }
-
-    public function offers()
-    {
-        return $this->hasMany(Offer::class);
-    }
-
-    public function accounts()
-    {
-        return $this->hasMany(Account::class);
-    }
-
-    public function chats()
-    {
-        return $this->hasMany(Chat::class);
+        return $this->belongsTo(CompanyInfo::class);
     }
 }

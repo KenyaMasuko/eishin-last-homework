@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Company;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Company;
+use App\Models\CompanyInfo;
 use App\Models\Feature;
 use App\Models\Industry;
 use Illuminate\Auth\Events\Registered;
@@ -19,7 +20,7 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        $company = Company::find(Auth::id());
+        $company = Company::find(Auth::id())->company()->first();
         $industries = Industry::find($company['industry_id']);
 
         return view('company.info.index', compact('company', 'industries'));
@@ -62,7 +63,7 @@ class CompanyController extends Controller
      */
     public function edit($id)
     {
-        $company = Company::find($id);
+        $company = CompanyInfo::find($id);
         $industries = Industry::all();
         return view('company.info.edit', compact('company', 'industries'));
     }
@@ -79,13 +80,14 @@ class CompanyController extends Controller
         $request->validate([
             'ceo_name' => 'required',
             'logo' => 'required',
+            'email' => 'required',
             'industry_id' => 'required',
         ]);
 
         $company = $request->all();
         unset($company['_token']);
         unset($company['_method']);
-        Company::where(['id' => $id])->update([
+        CompanyInfo::where(['id' => $id])->update([
             ...$company,
             'logo' => $request->file('logo')->store('public/images')
         ]);

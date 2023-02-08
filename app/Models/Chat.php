@@ -11,9 +11,9 @@ class Chat extends Model
 
     protected $guarded = ['id'];
 
-    public function company()
+    public function companyInfo()
     {
-        return $this->belongsTo(Company::class);
+        return $this->belongsTo(CompanyInfo::class);
     }
 
     public function user()

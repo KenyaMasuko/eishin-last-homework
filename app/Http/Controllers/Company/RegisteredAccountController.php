@@ -1,12 +1,17 @@
 <?php
 
-namespace App\Http\Controllers\User;
+namespace App\Http\Controllers\Company;
 
 use App\Http\Controllers\Controller;
-use App\Models\Offer;
+use App\Models\Company;
+use App\Models\CompanyInfo;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules;
 
-class OfferController extends Controller
+class RegisteredAccountController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,9 +20,9 @@ class OfferController extends Controller
      */
     public function index()
     {
-        $offers = Offer::with('companyInfo')->where(['is_public' => 1])->get();
+        $accounts = Company::where(['company_id' => Auth::user()->company_id])->get();
 
-        return view('user.offer.index', compact('offers'));
+        return view('company.account.index', compact('accounts'));
     }
 
     /**
@@ -27,7 +32,7 @@ class OfferController extends Controller
      */
     public function create()
     {
-        //
+        return view('company.account.create');
     }
 
     /**
@@ -38,7 +43,23 @@ class OfferController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:' . Company::class],
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        ]);
+
+
+        $registered_user = Company::create([
+            'company_id' => Auth::user()->company_id,
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
+
+        event(new Registered($registered_user));
+
+        return redirect(route('company.account.index'));
     }
 
     /**
@@ -49,9 +70,7 @@ class OfferController extends Controller
      */
     public function show($id)
     {
-        $offer = Offer::find($id);
-
-        return view('user.offer.show', compact('offer'));
+        //
     }
 
     /**
