@@ -34,6 +34,7 @@ class ThanksMail extends Mailable
     {
         return new Envelope(
             subject: 'ご応募ありがとうございました',
+            to: $this->user->email,
             from: new Address($this->company->email, $this->company->name),
         );
     }

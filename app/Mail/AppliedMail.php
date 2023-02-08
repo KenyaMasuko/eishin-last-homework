@@ -34,6 +34,7 @@ class AppliedMail extends Mailable
     {
         return new Envelope(
             subject: '求人より応募がありました',
+            to: $this->company->email,
             from: new Address('job-seeker@admin.com', '管理者')
         );
     }
