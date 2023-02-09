@@ -6,12 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Mail\AppliedMail;
 use App\Mail\ThanksMail;
 use App\Models\Chat;
-use App\Models\CompanyInfo;
 use App\Models\Offer;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\DB;
 
 class CandidateController extends Controller
 {
@@ -22,17 +22,9 @@ class CandidateController extends Controller
      */
     public function index()
     {
-        $offers = Offer::with('users')
-            ->where(['company_info_id' => Auth::user()->company_id])
-            // ->first()
-            // ->users()
-            ->get();
         $users = User::whereHas('offers', function ($query) {
             $query->where('company_info_id', '=', Auth::user()->company_id);
         })->get();
-
-        // $users = User::with('offers')-get();
-
 
         return view('company.candidate.index', compact('users'));
     }
