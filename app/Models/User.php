@@ -47,6 +47,13 @@ class User extends Authenticatable
         return $this->belongsToMany(Offer::class)->withTimestamps();
     }
 
+    public function application($company_id)
+    {
+        return $this->belongsToMany(Offer::class, 'offer_users')
+            ->withPivot('offer_id')
+            ->wherePivot('offer_id', $company_id);
+    }
+
     public function chats()
     {
         return $this->hasMany(Chat::class);

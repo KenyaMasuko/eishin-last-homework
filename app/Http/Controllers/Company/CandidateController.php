@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Mail\AppliedMail;
 use App\Mail\ThanksMail;
 use App\Models\Chat;
+use App\Models\CompanyInfo;
 use App\Models\Offer;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -21,11 +22,17 @@ class CandidateController extends Controller
      */
     public function index()
     {
-        $users = Offer::with('users')
+        $offers = Offer::with('users')
             ->where(['company_info_id' => Auth::user()->company_id])
-            ->first()
-            ->users()
+            // ->first()
+            // ->users()
             ->get();
+        $users = User::whereHas('offers', function ($query) {
+            $query->where('company_info_id', '=', Auth::user()->company_id);
+        })->get();
+
+        // $users = User::with('offers')-get();
+
 
         return view('company.candidate.index', compact('users'));
     }
@@ -74,21 +81,22 @@ class CandidateController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request)
     {
-        $offer = User::find(1)->offers()->where(['company_info_id' => Auth::user()->company_id])->first();
-
+        $user_id = $request->query()['user_id'];
+        $offer_id = $request->query()['offer_id'];
+        $offer = Offer::find($offer_id);
         $length = Chat::all()->count();
 
         // 表示する件数を代入
         $display = 5;
-        $chats = Chat::where(['offer_id' => $offer->id])
-            ->where(['user_id' => $id])
-            ->offset($length - $display)
-            ->limit($display)
+        $chats = Chat::where(['offer_id' => $offer_id])
+            ->where(['user_id' => $user_id])
+            ->orderBy('created_at', 'desc')
+            ->take(5)
             ->get();
 
-        return view('company.candidate.show', compact('chats', 'offer'));
+        return view('company.candidate.message', compact('chats', 'offer', 'user_id'));
     }
 
     /**

@@ -53,7 +53,8 @@ class CandidateController extends Controller
         }
 
         $Offer = new Offer();
-        User::find(Auth::id())->offers()->sync($request['offer_id']);
+        $Offer::find($request['offer_id'])->users()->attach(Auth::id());
+        // User::find(Auth::id())->offers()->sync($request['offer_id']);
         $offer = $Offer::find($request['offer_id']);
 
         // メール送る処理
@@ -82,10 +83,11 @@ class CandidateController extends Controller
         $display = 5;
         $chats = Chat::where(['offer_id' => $id])
             ->where(['user_id' => Auth::id()])
-            ->offset($length - $display)
-            ->limit($display)
+            ->orderBy('created_at', 'desc')
+            ->take(5)
             ->get();
         // $chats = Chat::all();
+        // dd($chats);
 
         return view('user.apply.show', compact('offer', 'chats'));
     }

@@ -67,39 +67,40 @@ class ChatController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function send(Request $request)
     {
+        $offer_id = $request->query()['offer_id'];
+        $user_id = $request->query()['user_id'];
         $Chat = new Chat();
+
         // user側
         if ($request['send_by'] === "0") {
             $validatedChat = $request->validate([
                 'message' => 'required',
                 'send_by' => 'integer',
-                'offer_id' => 'integer'
             ]);
 
-            $Chat->offer_id = $id;
+            $Chat->offer_id = $offer_id;
             $Chat->user_id = Auth::id();
             $Chat->message = $validatedChat['message'];
             $Chat->send_by = $validatedChat['send_by'];
             $Chat->save();
 
-            return redirect(route('user.apply.show', ['apply' => $id]));
+            return redirect(route('user.apply.show', ['apply' => $offer_id]));
         }
 
         $validatedChat = $request->validate([
             'message' => 'required',
             'send_by' => 'integer',
-            'offer_id' => 'integer'
         ]);
 
-        $Chat->offer_id = $validatedChat['offer_id'];
-        $Chat->user_id = $id;
+        $Chat->offer_id = $offer_id;
+        $Chat->user_id = $user_id;
         $Chat->message = $validatedChat['message'];
         $Chat->send_by = $validatedChat['send_by'];
         $Chat->save();
 
-        return redirect(route('company.candidate.show', ['candidate' => $id]));
+        return redirect(route('company.candidate.message', ['user_id' => $user_id, 'offer_id' => $offer_id]));
     }
 
     /**

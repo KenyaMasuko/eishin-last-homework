@@ -25,10 +25,9 @@
     <h1 class="my-4 text-3xl font-bold">{{env('APP_NAME')}}</h1>
     <div class="my-4 p-4 rounded-lg bg-white">
         <ul>
-            {{-- チャットデータを繰り返し表示 --}}
             @foreach ($chats as $chat)
             <p class="text-xs @if($chat->send_by === 0 ) text-right @endif">
-                {{$chat->created_at}} ＠
+                {{$chat->created_at}} @
                 @if ($chat->send_by === 1 )
                 {{$offer->companyInfo->name}}
                 @else
@@ -43,7 +42,7 @@
         </ul>
     </div>
     <form class="my-4 py-2 px-4 rounded-lg bg-gray-300 text-sm flex flex-col md:flex-row flex-grow"
-        action="{{ route('user.chat.store', $offer->id) }}" method="POST">
+        action="{{ route('user.chat.send', ['offer_id' => $offer->id, 'user_id' => Auth::id()]) }}" method="POST">
         @csrf
         <input type="hidden" name="send_by" value="0">
         <input type="hidden" name="company_info_id" value="{{ $offer->company_info_id }}">

@@ -33,7 +33,7 @@ Route::middleware('auth:users')->group(function () {
 
     Route::resource('apply', CandidateController::class);
 
-    Route::post('apply/{apply}', [ChatController::class, 'update'])->name('chat.store');
+    Route::post('apply/send', [ChatController::class, 'send'])->name('chat.send');
 });
 
 Route::resource('offers', OfferController::class);

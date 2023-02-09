@@ -92,5 +92,7 @@ Route::middleware('auth:companies')->group(function () {
 
     Route::resource('candidate', CandidateController::class);
 
-    Route::post('candidate/{candidate}', [ChatController::class, 'update'])->name('chat.store');
+    Route::get('candidate/message', [CandidateController::class, 'show'])->name('candidate.message');
+
+    Route::post('candidate/send', [ChatController::class, 'send'])->name('chat.send');
 });

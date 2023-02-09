@@ -27,7 +27,7 @@
             <ul>
                 @foreach ($chats as $chat)
                 <p class="text-xs @if($chat->send_by === 1 ) text-right @endif">
-                    {{$chat->created_at}} ＠
+                    {{$chat->created_at}} @
                     @if ($chat->send_by === 1 )
                     {{$offer->companyInfo->name}}
                     @else
@@ -42,10 +42,9 @@
             </ul>
         </div>
         <form class="my-4 py-2 px-4 rounded-lg bg-gray-300 text-sm flex flex-col md:flex-row flex-grow"
-            action="{{ route('company.chat.store', $offer->users[0]->id) }}" method="POST">
+            action="{{ route('company.chat.send', ['user_id' => $user_id, 'offer_id' => $offer->id]) }}" method="POST">
             @csrf
             <input type="hidden" name="send_by" value="1">
-            <input type="hidden" name="offer_id" value="{{ $offer->id }}">
             <input class="mt-2 md:mt-0 md:ml-2 py-1 px-2 rounded flex-auto" type="text" name="message"
                 placeholder="Input message." maxlength="200">
             <button class="mt-2 md:mt-0 md:ml-2 py-1 px-2 rounded text-center bg-gray-500 text-white"

@@ -35,7 +35,7 @@
                             {{ $offer->title }}
                         </td>
                         <td class="px-6 py-4">
-                            {{ $offer->company->name }}
+                            {{ $offer->companyInfo->name }}
                         </td>
                         <td class="px-6 py-4">
                             {{ $offer->created_at }}

@@ -24,6 +24,7 @@
                 </thead>
                 <tbody>
                     @foreach ($users as $user)
+                    @foreach ($user->offers as $offer)
                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                         <td class="px-6 py-4">
                             {{ $user->id }}
@@ -32,12 +33,12 @@
                             {{ $user->name }}
                         </td>
                         <td class="px-6 py-4">
-                            {{ $user->offers[0]->title }}
+                            <p>{{ $offer->title }}</p>
                         </td>
                         <td class="px-6 py-4 flex items-center gap-4">
-                            <a href="{{ route('company.candidate.show', $user->id)}}"
+                            <a href="{{ route('company.candidate.message', ['user_id' =>$user->id, 'offer_id' => $offer->id])}}"
                                 class="inline-block text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800">詳細</a>
-                            <form action="{{ route('company.candidate.destroy', $user->offers[0]->id) }}" method="POST">
+                            <form action="{{ route('company.candidate.destroy', $user->id) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit"
@@ -45,6 +46,7 @@
                             </form>
                         </td>
                     </tr>
+                    @endforeach
                     @endforeach
                 </tbody>
             </table>
