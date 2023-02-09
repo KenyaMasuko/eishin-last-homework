@@ -44,7 +44,7 @@ class User extends Authenticatable
 
     public function offers()
     {
-        return $this->belongsToMany(Offer::class);
+        return $this->belongsToMany(Offer::class)->withTimestamps();
     }
 
     public function chats()

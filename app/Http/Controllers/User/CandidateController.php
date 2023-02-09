@@ -53,9 +53,11 @@ class CandidateController extends Controller
         }
 
         $Offer = new Offer();
-        $Offer::find($request['offer_id'])->users()->sync(Auth::id());
-
+        User::find(Auth::id())->offers()->sync($request['offer_id']);
         $offer = $Offer::find($request['offer_id']);
+
+        // メール送る処理
+
         $user = Auth::user();
         $company = $offer->companyInfo()->first();
 
